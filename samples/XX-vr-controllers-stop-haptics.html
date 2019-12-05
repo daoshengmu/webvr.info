@@ -406,8 +406,9 @@ found in the LICENSE file.
         }
       }
 
-      var previousHapticController = -1;
-      var previousHapticBtn = -1;
+      // var previousHapticController = -1;
+      // var previousHapticBtn = -1;
+      var previousHaptic = new Map();
       function onAnimationFrame (t) {
         // do not attempt to render if there is no available WebGL context
         if (!gl || !stats || !cubeIsland || !debugGeom) {
@@ -442,12 +443,11 @@ found in the LICENSE file.
                     // Vibrate the gamepad using to the value of the button as
                     // the vibration intensity.
                     gamepad.hapticActuators[0].pulse(1.0, 8000);
-                    previousHapticBtn = j;
-                    previousHapticController = i;
+                    previousHaptic.set(i, j);
                     break;
-                  } else if (previousHapticController == i && previousHapticBtn == j) {
+                  } else if (previousHaptic.get(i) == j) {
                     gamepad.hapticActuators[0].pulse(0.0, 0.0);
-                    previousHapticController = previousHapticBtn = -1;
+                    previousHaptic.set(i, -1);
                   }
                 }
               }
